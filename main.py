@@ -1,10 +1,11 @@
-import pandas as pd  # Importing the pandas library, which helps us work with data in tables.
-import csv  # Importing the csv module, which helps us read and write CSV (Comma-Separated Values) files.
-from datetime import datetime  # Importing the datetime module to work with dates and times.
+import pandas as pd
+import csv
+from datetime import datetime
 
 # Importing functions from another file called data_entry.
 # These functions will get input from the user, such as date, amount, category, and description.
 from data_entry import get_date, get_amount, get_category, get_description
+import matplotlib.pyplot as plt
 
 # Defining a class called CSV that will handle our CSV file operations.
 class CSV:
@@ -97,7 +98,7 @@ class CSV:
             print(f"Total Income: ${total_income:.2f}")
             print(f"Total Expense: ${total_expense:.2f}")
             print(f"Net Savings: ${(total_income - total_expense):.2f}")
-
+        
         return filtered_df
 
 # This function gathers data from the user and adds it to the CSV file.
@@ -133,5 +134,59 @@ def add():
         # If the user doesn't want to add another transaction, print a thank you message.
         print("Thank you for using our finance tracker!")
 
-# Call the add function to start the process of adding a new transaction.
-add()
+def plot_transactions(df):
+    df.set_index('date', inplace=True)
+
+    income_df = (
+        df[df["category"] == "Income"]
+        .resample("D")
+        .sum()
+        .reindex(df.index, fill_value=0)
+        )
+    
+    expense_df = (
+        df[df["category"] == "Expense"]
+        .resample("D")
+        .sum()
+        .reindex(df.index, fill_value=0)
+        )
+    
+    plt.figure(figsize=(10, 5))
+    plt.plot(income_df.index, income_df["amount"], label="Income", color="green")
+    plt.plot(expense_df.index, expense_df["amount"], label="Expense", color="red")
+    plt.xlabel("Date")
+    plt.ylabel("Amount")
+    plt.title("Income and Expense Over Time")
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+
+
+
+def main():
+    while True:
+        print("\n1. Add a new transaction.")
+        print("2. View transactions and summary within a date range.")
+        print("3. Exit")
+        
+        choice = input("Enter your choice (1-3): ")
+
+        if choice == "1":
+            add()
+        elif choice == "2":
+            start_date = input("Enter the start date (dd-mm-yyyy): ")
+            end_date = input("Enter the end date (dd-mm-yyyy): ")
+            df = CSV.get_transaction(start_date, end_date)
+
+            if input("Do you want to see a graph of the transaction history? (y/n)").lower() == "y":
+                plot_transactions(df)
+
+        elif choice == "3":
+            print("Exiting...")
+            break
+        else:
+            print("Invalid choice. Please enter 1, 2 or 3.")
+
+
+if __name__ == "__main__":
+    main()

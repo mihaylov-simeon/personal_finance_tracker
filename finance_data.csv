@@ -1,10 +1,33 @@
 date,amount,category,description
+31-08-2024,450.0,Income,Bonus
+30-08-2024,25.0,Expense,Books
+29-08-2024,200.0,Expense,Utilities
+28-08-2024,1750.0,Income,Freelance work
+27-08-2024,800.0,Expense,Rent
+26-08-2024,55.0,Expense,Internet
+25-08-2024,1200.0,Income,Consulting
+24-08-2024,80.0,Expense,Groceries
+23-08-2024,500.0,Income,Dividends
+22-08-2024,300.0,Expense,Medical
+21-08-2024,70.0,Expense,Entertainment
+20-08-2024,300.0,Income,Payment for service
+19-08-2024,1000.0,Income,Project payment
 18-08-2024,133.33,Income,Tax return
 17-08-2024,13.0,Expense,Something
-16-08-2024,1300.0,Income,Paymnet
+16-08-2024,1300.0,Income,Payment
 15-08-2024,1500.0,Income,Payment
 14-08-2024,3850.0,Income,Salary
 13-08-2024,1000.0,Expense,Loan
-12-08-2024,1000.0,Expense,
+12-08-2024,1000.0,Expense,Insurance
 11-08-2024,200.0,Income,Food voucher
 10-08-2024,500.0,Expense,Communal
+09-08-2024,65.0,Expense,Transportation
+08-08-2024,900.0,Income,Investment
+07-08-2024,150.0,Expense,Books
+06-08-2024,700.0,Income,Side project
+05-08-2024,120.0,Expense,Health
+04-08-2024,320.0,Income,Online sales
+03-08-2024,45.0,Expense,Snacks
+02-08-2024,550.0,Income,Part-time job
+01-08-2024,40.0,Expense,Pet care
+31-08-2024,450.0,Income,Bonus

@@ -11,10 +11,8 @@ import matplotlib.pyplot as plt
 class CSV:
     # This is a constant variable that holds the name of the CSV file where we store data.
     CSV_FILE = "finance_data.csv"
-    
     # These are the column names for our CSV file.
-    COLUMNS = ['date', 'amount', 'category', 'description']
-    
+    COLUMNS = ['date', 'amount', 'category', 'description']    
     # This is the format in which dates will be stored in the CSV file (e.g., "18-08-2024").
     FORMAT = "%d-%m-%Y"
 
@@ -35,7 +33,7 @@ class CSV:
     # This function adds a new entry (row) to the CSV file.
     @classmethod
     def add_entry(cls, date, amount, category, description):
-        # Store the new entry data in a dictionary (a way to organize key-value pairs).
+        # Store the new entry data in a dictionary.
         new_entry = {
             "date": date,
             "amount": amount,
@@ -52,48 +50,37 @@ class CSV:
             writer = csv.DictWriter(csvfile, fieldnames=cls.COLUMNS)
             # Write the new entry (a new row) to the file.
             writer.writerow(new_entry)
-        # Print a message to the console to confirm the entry was added successfully.
         print("Entry added successfully!")
 
     # This function retrieves transactions between two dates.
     @classmethod
     def get_transaction(cls, start_date, end_date):
-        # Read the CSV file into a pandas DataFrame (a table of data).
-        df = pd.read_csv(cls.CSV_FILE)
-        
+        # Read the CSV file into a pandas DataFrame.
+        df = pd.read_csv(cls.CSV_FILE)      
         # Convert the 'date' column to datetime format for easier comparison.
         df['date'] = pd.to_datetime(df['date'], format=cls.FORMAT)
-        
         # Convert the user-provided start and end dates into datetime objects.
         start_date = datetime.strptime(start_date, CSV.FORMAT)
         end_date = datetime.strptime(end_date, CSV.FORMAT)
-
         # Create a mask (a filter) to find rows where the date is within the specified range.
         mask = (df['date'] >= start_date) & (df['date'] <= end_date)
-        
         # Use the mask to filter the DataFrame to only include rows where the date is within the specified range.
         filtered_df = df.loc[mask]
 
+        # Check if the filtered DataFrame is empty (i.e., no transactions were found within the specified date range).
         if filtered_df.empty:
-            # Check if the filtered DataFrame is empty (i.e., no transactions were found within the specified date range).
-            # If it is empty, print a message saying that no transactions were found.
             print('No transactions found in the given date range.')
         else:
-            # If the filtered DataFrame is not empty (i.e., transactions were found within the date range):
-            
-            # Print a message showing the start and end dates of the transactions found.
             # The dates are formatted according to the format specified in CSV.FORMAT (e.g., "dd-mm-yyyy").
-            print(f"Transactions from {start_date.strftime(CSV.FORMAT)} to {end_date.strftime(CSV.FORMAT)}")
-            
+            print(f"Transactions from {start_date.strftime(CSV.FORMAT)} to {end_date.strftime(CSV.FORMAT)}")     
             # Print the filtered DataFrame as a string, showing the transaction data.
             # The 'index=False' argument means that the row numbers won't be printed.
             # The 'formatters' argument makes sure that the dates are shown in the specified format.
             print(filtered_df.to_string(index=False, formatters={"date": lambda x: x.strftime(CSV.FORMAT)}))
-
             # Calculate and print the total amount of income and expense for each amount based on the category
             total_income = filtered_df[filtered_df["category"] == "Income"]["amount"].sum()
             total_expense = filtered_df[filtered_df["category"] == "Expense"]["amount"].sum()
-
+            
             print("\nSummary:")
             print(f"Total Income: ${total_income:.2f}")
             print(f"Total Expense: ${total_expense:.2f}")
@@ -104,34 +91,26 @@ class CSV:
 # This function gathers data from the user and adds it to the CSV file.
 def add():
     # Make sure the CSV file is initialized (created if it doesn't exist).
-    CSV.initialize_csv()
-    
+    CSV.initialize_csv() 
     # Get the date of the transaction from the user.
     date = get_date(
                     "Enter the date of the transaction (dd-mm-yyyy) or press enter for today's date: ", 
                     allow_default=True)
     
     # Get the amount of the transaction from the user.
-    amount = get_amount()
-    
-    # Get the category of the transaction from the user (e.g., "Groceries").
+    amount = get_amount()    
+    # Get the category of the transaction from the user.
     category = get_category()
-    
-    # Get a description of the transaction from the user (e.g., "Monthly shopping.").
+    # Get a description of the transaction from the user
     description = get_description()
-    
     # Add the new entry to the CSV file using the data gathered from the user.
-    CSV.add_entry(date, amount, category, description)
+    CSV.add_entry(date, amount, category, description
 
-    # Ask the user if they want to add another transaction.
-    add_another_transaction = input('Would you like to add another transaction (y/n)?: ' )
+    add_another_transaction = input('Would you like to add another transaction (y/n)?: '
 
-    # Convert the user's input to lowercase to handle both "y" and "Y".
     if add_another_transaction.lower() == "y":
-        # Call the add function again to restart the process of adding a new transaction.
         add()
     else:
-        # If the user doesn't want to add another transaction, print a thank you message.
         print("Thank you for using our finance tracker!")
 
 def plot_transactions(df):
